@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "flask-final"
+version = "0.1.0"
+description = ""
+authors = ["Azamat <azamat201760@yandex.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+flask = "^3.0.2"
+flask-wtf = "^1.2.1"
+sqlalchemy = "^2.0.29"
+flask-login = "^0.6.3"
+sqlalchemy-serializer = "^1.4.1"
+requests = "^2.31.0"
+flask-restful = "^0.3.10"
+alembic = "^1.13.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
