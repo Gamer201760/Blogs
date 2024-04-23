@@ -19,6 +19,7 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
 	)
 
 	role = sqlalchemy.orm.relationship('Role', back_populates='user')
+	article = sqlalchemy.orm.relationship('Article', back_populates='user')
 
 	def set_password(self, password: str):
 		self.hashed_password = generate_password_hash(password)
