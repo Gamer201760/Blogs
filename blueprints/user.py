@@ -1,7 +1,9 @@
 from flask import Blueprint, redirect, render_template
 from flask_login import login_user
+from sqlalchemy import or_
 
 from data import db_session
+from data.role import Role
 from data.user import User
 from forms.login import LoginForm
 from forms.register import RegisterForm
@@ -29,17 +31,24 @@ def register():
 	form = RegisterForm()
 	if form.validate_on_submit():
 		db_sess = db_session.create_session()
-		if db_sess.query(User).filter(User.username == form.username.data).count() > 0:
+		if (
+			db_sess.query(User)
+			.filter(
+				or_(User.username == form.username.data, User.email == form.email.data)
+			)
+			.count()
+			> 0
+		):
 			return render_template(
 				'register.html',
 				title='Регистрация',
-				message='Пользователь с такой почтой уже существует',
+				message='Пользователь с такой почтой или именем уже существует',
 				form=form,
 			)
 		user = User()
 		user.email = form.email.data
 		user.username = form.username.data
-		user.role_id = 1
+		user.role_id = db_sess.query(Role).filter(Role.name == 'Customer').first().id
 		user.set_password(form.password.data)
 		try:
 			db_sess.merge(user)

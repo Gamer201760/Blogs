@@ -26,3 +26,7 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
 
 	def check_password(self, password: str) -> bool:
 		return check_password_hash(self.hashed_password, password)
+
+	@property
+	def is_admin(self) -> bool:
+		return self.role.name == 'Admin'

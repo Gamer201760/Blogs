@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="col card shadow-sm">
+    <div class="card-body">
+        <h1 class="card-text">{{ article.title }}</h1>
+        <hr class="hr" />
+        {{ text | safe }}
+
+    </div>
+</div>
+{% endblock %}

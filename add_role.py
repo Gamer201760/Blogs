@@ -6,6 +6,6 @@ db_session.global_init('db/blogs.db')
 sess = db_session.create_session()
 
 role = Role()
-role.name = 'Moderator'
+role.name = 'Customer'
 sess.add(role)
 sess.commit()
