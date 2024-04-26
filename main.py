@@ -4,18 +4,26 @@ from datetime import timedelta
 from dotenv import load_dotenv
 from flask import Flask, make_response, redirect, render_template
 from flask_login import LoginManager, login_required, logout_user
+from flask_restful import Api
 
 from blueprints import article, user
 from data import db_session
 from data.__all_models import *  # noqa: F403
 from data.article import Article
 from data.user import User
+from resources.article.resourse import ArticleListResource, ArticleResource
+from resources.user.resourse import UserResource
 
 load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(365)
+
+api = Api(app)
+api.add_resource(UserResource, '/api/v1/user')
+api.add_resource(ArticleResource, '/api/v1/article/<int:id>')
+api.add_resource(ArticleListResource, '/api/v1/article')
 
 
 login_manager = LoginManager()

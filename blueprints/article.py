@@ -14,11 +14,12 @@ bp = Blueprint('articles', __name__, template_folder='templates', url_prefix='/a
 @bp.route('/', methods=['GET', 'POST'])
 @login_required
 def article():
+	if not current_user.is_admin:
+		redirect('/')
 	form = ArticleForm()
 	if form.validate_on_submit():
 		db_sess = db_session.create_session()
 		obj = Article()
-		obj.user_id = current_user.id
 		obj.title = form.title.data
 		obj.text = form.text.data
 		obj.img_url = form.preview_img.data
@@ -48,7 +49,7 @@ def get(id: int):
 @bp.route('/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit(id: int):
-	if current_user.is_admin is False:
+	if not current_user.is_admin:
 		return redirect('/')
 	db_sess = db_session.create_session()
 	obj = db_sess.get(Article, id)
@@ -68,11 +69,11 @@ def edit(id: int):
 		if obj is None:
 			return redirect('/')
 
-		if form.title.data != obj.title:
+		if len(form.title.data) != 0 and form.title.data != obj.title:
 			obj.title = form.title.data
-		if form.text.data != obj.text:
+		if len(form.text.data) != 0 and form.text.data != obj.text:
 			obj.text = form.text.data
-		if form.preview_img.data != obj.img_url:
+		if len(form.preview_img.data) != 0 and form.preview_img.data != obj.img_url:
 			obj.img_url = form.preview_img.data
 		if form.read_time.data != obj.read_time:
 			obj.read_time = form.read_time.data

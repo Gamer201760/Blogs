@@ -1,10 +1,11 @@
 import sqlalchemy
 import sqlalchemy.orm
+from sqlalchemy_serializer import SerializerMixin
 
 from .db_session import SqlAlchemyBase
 
 
-class Article(SqlAlchemyBase):
+class Article(SqlAlchemyBase, SerializerMixin):
 	__tablename__ = 'article'
 
 	id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
@@ -15,8 +16,3 @@ class Article(SqlAlchemyBase):
 	relase_date = sqlalchemy.Column(
 		sqlalchemy.DateTime, nullable=False, server_default=sqlalchemy.func.now()
 	)
-	user_id = sqlalchemy.Column(
-		sqlalchemy.Integer, sqlalchemy.ForeignKey('user.id'), nullable=False
-	)
-
-	user = sqlalchemy.orm.relationship('User', back_populates='article')
