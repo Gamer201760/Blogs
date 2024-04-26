@@ -35,11 +35,9 @@ def load_user(user_id):
 	return db_session.create_session().get(User, user_id)
 
 
-def main():
-	db_session.global_init('db/blogs.db')
-	app.register_blueprint(user.bp)
-	app.register_blueprint(article.bp)
-	app.run(debug=True, port=8080)
+db_session.global_init('db/blogs.db')
+app.register_blueprint(user.bp)
+app.register_blueprint(article.bp)
 
 
 @app.errorhandler(404)
@@ -72,4 +70,4 @@ def index():
 
 
 if __name__ == '__main__':
-	main()
+	app.run(debug=True, port=8080)
